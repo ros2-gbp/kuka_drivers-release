@@ -1,0 +1,12 @@
+Source: ros-humble-joint-group-impedance-controller
+Section: misc
+Priority: optional
+Maintainer: Aron Svastits <svastits1@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), ros-humble-ament-cmake, ros-humble-forward-command-controller, ros-humble-generate-parameter-library, ros-humble-kuka-drivers-core, ros-humble-pluginlib, ros-humble-ros-workspace
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-humble-joint-group-impedance-controller
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-humble-forward-command-controller, ros-humble-generate-parameter-library, ros-humble-kuka-drivers-core, ros-humble-pluginlib, ros-humble-ros-workspace
+Description: Controller for modifying impedance (stiffness and damping) interfaces of a joint group
