@@ -1,0 +1,12 @@
+Source: ros-humble-fri-state-broadcaster
+Section: misc
+Priority: optional
+Maintainer: Aron Svastits <svastits1@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), ros-humble-ament-cmake, ros-humble-controller-interface, ros-humble-kuka-driver-interfaces, ros-humble-kuka-drivers-core, ros-humble-pluginlib, ros-humble-ros-workspace
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-humble-fri-state-broadcaster
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-humble-controller-interface, ros-humble-kuka-driver-interfaces, ros-humble-kuka-drivers-core, ros-humble-pluginlib, ros-humble-ros-workspace
+Description: Broadcaster for FRI state
