@@ -1,0 +1,12 @@
+Source: ros-humble-kuka-sunrise-fri-driver
+Section: misc
+Priority: optional
+Maintainer: Aron Svastits <svastits1@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), libnanopb-dev, ros-humble-ament-cmake, ros-humble-controller-manager-msgs, ros-humble-hardware-interface, ros-humble-kuka-driver-interfaces, ros-humble-kuka-drivers-core, ros-humble-launch-testing-ament-cmake <!nocheck>, ros-humble-ros2lifecycle <!nocheck>, ros-humble-std-msgs, ros-humble-std-srvs, ros-humble-ros-workspace
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-humble-kuka-sunrise-fri-driver
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libnanopb-dev, ros-humble-controller-manager-msgs, ros-humble-fri-configuration-controller, ros-humble-fri-state-broadcaster, ros-humble-hardware-interface, ros-humble-joint-group-impedance-controller, ros-humble-joint-state-broadcaster, ros-humble-joint-trajectory-controller, ros-humble-kuka-control-mode-handler, ros-humble-kuka-driver-interfaces, ros-humble-kuka-drivers-core, ros-humble-kuka-event-broadcaster, ros-humble-kuka-lbr-iiwa-support, ros-humble-ros2-control, ros-humble-std-msgs, ros-humble-std-srvs, ros-humble-ros-workspace
+Description: ROS2 KUKA sunrise interface
