@@ -1,0 +1,12 @@
+Source: ros-humble-kuka-controllers
+Section: misc
+Priority: optional
+Maintainer: Aron Svastits <svastits1@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), ros-humble-ament-cmake, ros-humble-ros-workspace
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-humble-kuka-controllers
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-humble-fri-configuration-controller, ros-humble-fri-state-broadcaster, ros-humble-joint-group-impedance-controller, ros-humble-kuka-control-mode-handler, ros-humble-kuka-event-broadcaster, ros-humble-ros-workspace
+Description: ROS2 controllers for KUKA robots
