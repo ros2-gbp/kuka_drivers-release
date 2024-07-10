@@ -1,0 +1,12 @@
+Source: ros-humble-kuka-control-mode-handler
+Section: misc
+Priority: optional
+Maintainer: Aron Svastits <svastits1@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), ros-humble-ament-cmake, ros-humble-controller-interface, ros-humble-kuka-drivers-core, ros-humble-pluginlib, ros-humble-ros-workspace
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-humble-kuka-control-mode-handler
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-humble-controller-interface, ros-humble-kuka-drivers-core, ros-humble-pluginlib, ros-humble-ros-workspace
+Description: Controller for setting the control mode of KUKA robots in runtime
