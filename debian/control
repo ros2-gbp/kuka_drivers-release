@@ -1,0 +1,12 @@
+Source: ros-humble-iiqka-moveit-example
+Section: misc
+Priority: optional
+Maintainer: Aron Svastits <svastits1@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), ros-humble-ament-cmake, ros-humble-moveit-ros-planning-interface, ros-humble-moveit-visual-tools, ros-humble-ros-workspace
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-humble-iiqka-moveit-example
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-humble-kuka-iiqka-eac-driver, ros-humble-moveit, ros-humble-moveit-ros-planning-interface, ros-humble-moveit-visual-tools, ros-humble-ros2-controllers-test-nodes, ros-humble-ros-workspace
+Description: ROS example package using the iiQKA driver and moveit
