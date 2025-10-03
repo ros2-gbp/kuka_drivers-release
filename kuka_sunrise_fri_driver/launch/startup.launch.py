@@ -23,7 +23,7 @@ from launch_ros.substitutions import FindPackageShare
 
 def launch_setup(context, *args, **kwargs):
     robot_model = LaunchConfiguration("robot_model")
-    use_fake_hardware = LaunchConfiguration("use_fake_hardware")
+    mode = LaunchConfiguration("mode")
     controller_ip = LaunchConfiguration("controller_ip")
     client_ip = LaunchConfiguration("client_ip")
     client_port = LaunchConfiguration("client_port")
@@ -39,6 +39,7 @@ def launch_setup(context, *args, **kwargs):
     jtc_config = LaunchConfiguration("jtc_config")
     jic_config = LaunchConfiguration("jic_config")
     ec_config = LaunchConfiguration("ec_config")
+    etb_config = LaunchConfiguration("etb_config")
     if ns.perform(context) == "":
         tf_prefix = ""
     else:
@@ -66,8 +67,8 @@ def launch_setup(context, *args, **kwargs):
             "client_port:=",
             client_port,
             " ",
-            "use_fake_hardware:=",
-            use_fake_hardware,
+            "mode:=",
+            mode,
             " ",
             "prefix:=",
             tf_prefix,
@@ -116,6 +117,7 @@ def launch_setup(context, *args, **kwargs):
             jtc_config,
             jic_config,
             ec_config,
+            etb_config,
             {
                 "hardware_components_initial_state": {
                     "unconfigured": [tf_prefix + robot_model.perform(context)]
@@ -159,6 +161,7 @@ def launch_setup(context, *args, **kwargs):
 
     controller_names = [
         "joint_state_broadcaster",
+        "external_torque_broadcaster",
         "joint_trajectory_controller",
         "fri_configuration_controller",
         "fri_state_broadcaster",
@@ -185,7 +188,7 @@ def generate_launch_description():
     launch_arguments.append(DeclareLaunchArgument("controller_ip", default_value="0.0.0.0"))
     launch_arguments.append(DeclareLaunchArgument("client_ip", default_value="0.0.0.0"))
     launch_arguments.append(DeclareLaunchArgument("client_port", default_value="30200"))
-    launch_arguments.append(DeclareLaunchArgument("use_fake_hardware", default_value="false"))
+    launch_arguments.append(DeclareLaunchArgument("mode", default_value="hardware"))
     launch_arguments.append(DeclareLaunchArgument("namespace", default_value=""))
     launch_arguments.append(DeclareLaunchArgument("x", default_value="0"))
     launch_arguments.append(DeclareLaunchArgument("y", default_value="0"))
@@ -220,6 +223,13 @@ def generate_launch_description():
             "ec_config",
             default_value=get_package_share_directory("kuka_sunrise_fri_driver")
             + "/config/effort_controller_config.yaml",
+        )
+    )
+    launch_arguments.append(
+        DeclareLaunchArgument(
+            "etb_config",
+            default_value=get_package_share_directory("kuka_sunrise_fri_driver")
+            + "/config/external_torque_broadcaster_config.yaml",
         )
     )
     return LaunchDescription(launch_arguments + [OpaqueFunction(function=launch_setup)])
