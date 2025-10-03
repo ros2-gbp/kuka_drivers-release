@@ -1,0 +1,12 @@
+Source: ros-humble-kuka-iiqka-eac-driver
+Section: misc
+Priority: optional
+Maintainer: Aron Svastits <svastits1@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), ros-humble-ament-cmake, ros-humble-controller-manager-msgs, ros-humble-hardware-interface, ros-humble-kuka-drivers-core, ros-humble-kuka-external-control-sdk, ros-humble-launch-testing-ament-cmake <!nocheck>, ros-humble-pluginlib, ros-humble-ros2lifecycle <!nocheck>, ros-humble-std-msgs, ros-humble-ros-workspace
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-humble-kuka-iiqka-eac-driver
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-humble-controller-manager-msgs, ros-humble-effort-controllers, ros-humble-hardware-interface, ros-humble-joint-group-impedance-controller, ros-humble-joint-state-broadcaster, ros-humble-joint-trajectory-controller, ros-humble-kuka-control-mode-handler, ros-humble-kuka-drivers-core, ros-humble-kuka-event-broadcaster, ros-humble-kuka-external-control-sdk, ros-humble-kuka-lbr-iisy-support, ros-humble-pluginlib, ros-humble-ros2-control, ros-humble-std-msgs, ros-humble-ros-workspace
+Description: A ROS2 hardware interface for use with KUKA iiQKA OS
