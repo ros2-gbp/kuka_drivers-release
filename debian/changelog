@@ -1,0 +1,8 @@
+ros-humble-kuka-kss-message-handler (1.0.0-1jammy) jammy; urgency=high
+
+  * Add EKI wrapper for starting RSI
+  * Contributors: Komáromi Sándor, Kristof Pasztor, Áron Svastits
+
+ -- Kristof Matyas Pasztor <pasztor.kristof.kp@gmail.com>  Thu, 02 Oct 2025 22:00:00 -0000
+
+
