@@ -2,6 +2,10 @@
 Changelog for package kuka_event_broadcaster
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.1.0 (2026-07-15)
+------------------
+* Add mxAutomation support 
+
 1.0.0 (2025-10-03)
 ------------------
 * Update version and maintainers
