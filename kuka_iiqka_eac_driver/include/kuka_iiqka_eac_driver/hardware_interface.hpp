@@ -1,4 +1,4 @@
-// Copyright 2022 Aron Svastits
+// Copyright 2022 KUKA Hungaria Kft.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -86,6 +86,7 @@ private:
   std::vector<double> hw_stiffness_commands_;
   std::vector<double> hw_damping_commands_;
   std::vector<double> hw_position_states_;
+  std::vector<double> hw_commanded_position_states_;  // State interface for commanded positions
   std::vector<double> hw_torque_states_;
 
   double hw_control_mode_command_ = 0;
