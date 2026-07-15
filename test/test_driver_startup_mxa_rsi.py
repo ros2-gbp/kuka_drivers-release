@@ -1,4 +1,4 @@
-# Copyright 2024 KUKA Hungaria Kft.
+# Copyright 2025 KUKA Hungaria Kft.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ def generate_test_description():
                     ]
                 ),
                 launch_arguments={
-                    "driver_version": "rsi_only",
+                    "driver_version": "mxa_rsi",
                 }.items(),
             ),
             launch_testing.actions.ReadyToTest(),
