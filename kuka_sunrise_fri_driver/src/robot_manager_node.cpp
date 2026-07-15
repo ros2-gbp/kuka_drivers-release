@@ -22,6 +22,7 @@
 #include "kuka_sunrise_fri_driver/robot_manager_node.hpp"
 
 using namespace controller_manager_msgs::srv;  // NOLINT
+using namespace lifecycle_msgs::msg;           // NOLINT
 
 namespace kuka_sunrise_fri_driver
 {
@@ -67,6 +68,9 @@ RobotManagerNode::RobotManagerNode() : kuka_drivers_core::ROS2BaseLCNode("robot_
     [this](const std_msgs::msg::UInt8::SharedPtr msg) { this->EventSubscriptionCallback(msg); },
     sub_options);
 
+  set_param_client_ = this->create_client<rcl_interfaces::srv::SetParameters>(
+    "controller_manager/set_parameters", qos.get_rmw_qos_profile(), cbg_);
+
   registerStaticParameter<std::string>(
     "robot_model", "lbr_iiwa14_r820", kuka_drivers_core::ParameterSetAccessRights{false, false},
     [this](const std::string & robot_model)
@@ -77,8 +81,8 @@ RobotManagerNode::RobotManagerNode() : kuka_drivers_core::ROS2BaseLCNode("robot_
     [this](const std::string & controller_ip) { return this->ValidateIPAdress(controller_ip); });
 
   registerParameter<int>(
-    "send_period_ms", 10, kuka_drivers_core::ParameterSetAccessRights{true, false},
-    [this](const int & send_period) { return this->onSendPeriodChangeRequest(send_period); });
+    "cycle_time", 10, kuka_drivers_core::ParameterSetAccessRights{true, false},
+    [this](const int & send_period) { return this->ValidatePeriod(send_period); });
 
   registerParameter<int>(
     "receive_multiplier", 1, kuka_drivers_core::ParameterSetAccessRights{true, false},
@@ -124,8 +128,11 @@ RobotManagerNode::on_configure(const rclcpp_lifecycle::State &)
   control_mode_pub_->publish(control_mode_msg_);
 
   // Publish FRI configuration to notify fri_configuration_controller of initial values
-  setFriConfiguration(send_period_ms_, receive_multiplier_);
-
+  if (SendPeriodChangeRequest() == false)
+  {
+    RCLCPP_ERROR(get_logger(), "Failed to set FRI configuration");
+    return FAILURE;
+  }
   // Configure hardware interface
   if (!kuka_drivers_core::changeHardwareState(
         change_hardware_state_client_, robot_model_,
@@ -215,6 +222,12 @@ RobotManagerNode::on_activate(const rclcpp_lifecycle::State &)
     this->on_deactivate(get_current_state());
     return FAILURE;
   }
+
+  if (SendPeriodChangeRequest() == false)
+  {
+    RCLCPP_ERROR(get_logger(), "Failed to set FRI configuration");
+    return FAILURE;
+  }
   return SUCCESS;
 }
 
@@ -293,8 +306,18 @@ bool RobotManagerNode::onControlModeChangeRequest(int control_mode)
   return true;
 }
 
-bool RobotManagerNode::onSendPeriodChangeRequest(int send_period)
+bool RobotManagerNode::ValidatePeriod(int send_period)
 {
+  if (this->get_current_state().id() == lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE)
+  {
+    RCLCPP_ERROR(
+      this->get_logger(),
+      "Tried to change cycle time while driver is active. "
+      "Cycle time can only be changed in inactive state. "
+      "Please deactivate the driver, change cycle time, and activate it again.");
+    return false;
+  }
+
   if (send_period < 1 || send_period > 100)
   {
     RCLCPP_ERROR(get_logger(), "Send period milliseconds must be >=1 && <=100");
@@ -306,10 +329,47 @@ bool RobotManagerNode::onSendPeriodChangeRequest(int send_period)
     RCLCPP_ERROR(get_logger(), "Control signal send period must not be bigger than 10 ms");
     return false;
   }
-
   send_period_ms_ = send_period;
-  setFriConfiguration(send_period_ms_, receive_multiplier_);
   return true;
+}
+
+bool RobotManagerNode::SendPeriodChangeRequest()
+{
+  if (!ValidatePeriod(send_period_ms_))
+  {
+    return false;
+  }
+
+  setFriConfiguration(send_period_ms_, receive_multiplier_);
+
+  int desired_rate_ = 1000 / send_period_ms_;  // Convert ms to Hz
+  auto request = std::make_shared<rcl_interfaces::srv::SetParameters::Request>();
+  rcl_interfaces::msg::Parameter param;
+  rclcpp::Parameter p("update_rate", desired_rate_);
+  request->parameters.push_back(p.to_parameter_msg());
+  RCLCPP_INFO(this->get_logger(), "Publishing update_rate (%d Hz)", desired_rate_);
+
+  auto response = kuka_drivers_core::sendRequest<rcl_interfaces::srv::SetParameters::Response>(
+    set_param_client_, request,
+    5000,  // service timeout
+    5000   // response timeout
+  );
+
+  if (!response || response->results.empty() || !response->results[0].successful)
+  {
+    const char * reason = (response && !response->results.empty())
+                            ? response->results[0].reason.c_str()
+                            : "no response";
+
+    RCLCPP_ERROR(this->get_logger(), "Failed to set update_rate parameter: %s", reason);
+    return false;
+  }
+  else
+  {
+    RCLCPP_INFO(
+      this->get_logger(), "Successfully set update_rate parameter to %d Hz", desired_rate_);
+    return true;
+  }
 }
 
 bool RobotManagerNode::onReceiveMultiplierChangeRequest(const int & receive_multiplier)
@@ -400,11 +460,11 @@ std::string RobotManagerNode::GetControllerName() const
   }
 }
 
-void RobotManagerNode::setFriConfiguration(int send_period_ms, int receive_multiplier) const
+void RobotManagerNode::setFriConfiguration(int cycle_time, int receive_multiplier) const
 {
   kuka_driver_interfaces::msg::FriConfiguration msg;
   msg.receive_multiplier = receive_multiplier;
-  msg.send_period_ms = send_period_ms;
+  msg.send_period_ms = cycle_time;
   fri_config_pub_->publish(msg);
 }
 
