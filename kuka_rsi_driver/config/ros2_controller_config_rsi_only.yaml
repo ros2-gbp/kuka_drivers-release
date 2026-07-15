@@ -1,4 +1,4 @@
-controller_manager:
+/**/controller_manager:
   ros__parameters:
     update_rate: 250  # Hz
 
@@ -8,3 +8,5 @@ controller_manager:
       type: joint_state_broadcaster/JointStateBroadcaster
     gpio_controller:
       type: gpio_controllers/GpioCommandController
+    event_broadcaster:
+      type: kuka_controllers/EventBroadcaster
