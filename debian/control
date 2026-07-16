@@ -1,0 +1,12 @@
+Source: ros-jazzy-fri-configuration-controller
+Section: misc
+Priority: optional
+Maintainer: "Aron Svastits" <svastits1@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), ros-jazzy-ament-cmake, ros-jazzy-controller-interface, ros-jazzy-kuka-driver-interfaces, ros-jazzy-kuka-drivers-core, ros-jazzy-pluginlib, ros-jazzy-ros-workspace
+Homepage: https://index.ros.org/p/fri_configuration_controller/#jazzy
+Standards-Version: 3.9.2
+
+Package: ros-jazzy-fri-configuration-controller
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-jazzy-controller-interface, ros-jazzy-kuka-driver-interfaces, ros-jazzy-kuka-drivers-core, ros-jazzy-pluginlib, ros-jazzy-ros-workspace
+Description: Controller for configuration of FRI
