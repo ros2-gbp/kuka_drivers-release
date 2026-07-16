@@ -1,0 +1,12 @@
+Source: ros-jazzy-kuka-sunrise-fri-driver
+Section: misc
+Priority: optional
+Maintainer: "Aron Svastits" <svastits1@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), libnanopb-dev, ros-jazzy-ament-cmake, ros-jazzy-controller-manager-msgs, ros-jazzy-hardware-interface, ros-jazzy-kuka-driver-interfaces, ros-jazzy-kuka-drivers-core, ros-jazzy-launch-testing-ament-cmake <!nocheck>, ros-jazzy-ros2lifecycle <!nocheck>, ros-jazzy-std-msgs, ros-jazzy-std-srvs, ros-jazzy-ros-workspace
+Homepage: https://index.ros.org/p/kuka_sunrise_fri_driver/#jazzy
+Standards-Version: 3.9.2
+
+Package: ros-jazzy-kuka-sunrise-fri-driver
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libnanopb-dev, ros-jazzy-controller-manager, ros-jazzy-controller-manager-msgs, ros-jazzy-fri-configuration-controller, ros-jazzy-fri-state-broadcaster, ros-jazzy-hardware-interface, ros-jazzy-joint-group-impedance-controller, ros-jazzy-joint-state-broadcaster, ros-jazzy-joint-trajectory-controller, ros-jazzy-kuka-control-mode-handler, ros-jazzy-kuka-driver-interfaces, ros-jazzy-kuka-drivers-core, ros-jazzy-kuka-event-broadcaster, ros-jazzy-kuka-lbr-iiwa-support, ros-jazzy-std-msgs, ros-jazzy-std-srvs, ros-jazzy-ros-workspace
+Description: ROS2 KUKA sunrise interface
