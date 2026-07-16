@@ -1,3 +1,40 @@
+## kuka_drivers (jazzy) - 2.0.0-1
+
+The packages in the `kuka_drivers` repository were released into the `jazzy` distro by running `/usr/bin/bloom-release --new-track --rosdistro jazzy --track jazzy kuka_drivers` on `Thu, 16 Jul 2026 07:23:38 -0000`
+
+These packages were released:
+- `fri_configuration_controller`
+- `fri_state_broadcaster`
+- `joint_group_impedance_controller`
+- `kuka_control_mode_handler`
+- `kuka_controllers`
+- `kuka_driver_interfaces`
+- `kuka_drivers`
+- `kuka_drivers_core`
+- `kuka_event_broadcaster`
+- `kuka_iiqka_eac_driver`
+- `kuka_kss_message_handler`
+- `kuka_rsi_driver`
+- `kuka_rsi_simulator`
+- `kuka_sunrise_fri_driver`
+
+Version of package(s) in repository `kuka_drivers`:
+
+- upstream repository: https://github.com/kroshu/kuka_drivers.git
+- release repository: unknown
+- rosdistro version: `null`
+- old version: `null`
+- new version: `2.0.0-1`
+
+Versions of tools used:
+
+- bloom version: `0.14.3`
+- catkin_pkg version: `1.1.0`
+- rosdep version: `0.26.0`
+- rosdistro version: `1.0.1`
+- vcstools version: `0.1.42`
+
+
 ## kuka_drivers (humble) - 1.1.0-1
 
 The packages in the `kuka_drivers` repository were released into the `humble` distro by running `/usr/bin/bloom-release --rosdistro humble kuka_drivers` on `Wed, 15 Jul 2026 13:30:58 -0000`
