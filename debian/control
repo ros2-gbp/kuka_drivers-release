@@ -1,0 +1,12 @@
+Source: ros-jazzy-kuka-kss-message-handler
+Section: misc
+Priority: optional
+Maintainer: "Aron Svastits" <svastits1@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), ros-jazzy-ament-cmake-ros, ros-jazzy-controller-interface, ros-jazzy-controller-manager <!nocheck>, ros-jazzy-kuka-driver-interfaces, ros-jazzy-kuka-drivers-core, ros-jazzy-pluginlib, ros-jazzy-ros2-control-test-assets <!nocheck>, ros-jazzy-std-msgs, ros-jazzy-ros-workspace
+Homepage: https://index.ros.org/p/kuka_kss_message_handler/#jazzy
+Standards-Version: 3.9.2
+
+Package: ros-jazzy-kuka-kss-message-handler
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-jazzy-controller-interface, ros-jazzy-kuka-driver-interfaces, ros-jazzy-kuka-drivers-core, ros-jazzy-pluginlib, ros-jazzy-std-msgs, ros-jazzy-ros-workspace
+Description: Non-real time message handler for KSS KUKA robots
