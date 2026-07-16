@@ -2,7 +2,7 @@
 Changelog for package kuka_control_mode_handler
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1.1.0 (2026-07-15)
+2.0.0 (2026-07-16)
 ------------------
 * Add mxAutomation support and refactor
 
@@ -10,7 +10,6 @@ Changelog for package kuka_control_mode_handler
 ------------------
 * Smaller bugfixes
 * Update version and maintainers
-* Contributors: Komáromi Sándor
 
 0.9.2 (2024-07-10)
 ------------------

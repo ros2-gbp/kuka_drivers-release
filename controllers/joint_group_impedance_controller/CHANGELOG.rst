@@ -2,7 +2,7 @@
 Changelog for package joint_group_impedance_controller
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1.1.0 (2026-07-15)
+2.0.0 (2026-07-16)
 ------------------
 * Add `commanded_position` interface to `joint_group_impedance_controller` 
 
@@ -10,7 +10,6 @@ Changelog for package joint_group_impedance_controller
 ------------------
 * Smaller bugfixes
 * Update version and maintainers
-* Contributors: Komáromi Sándor
 
 0.9.2 (2024-07-10)
 ------------------

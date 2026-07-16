@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.5)
 project(kuka_sunrise_fri_driver)
 
-# Default to C99
+# C11 needed for nanopb
 if(NOT CMAKE_C_STANDARD)
-  set(CMAKE_C_STANDARD 99)
+  set(CMAKE_C_STANDARD 11)
 endif()
 
 # C++17 needed for string_view
@@ -24,8 +24,14 @@ find_package(pluginlib REQUIRED)
 find_package(controller_manager_msgs)
 find_package(std_msgs)
 find_package(std_srvs)
+find_package(nanopb REQUIRED)
 
-include_directories(include src/fri_client_sdk)
+find_path(NANOPB_INCLUDE_DIR
+  NAMES pb.h
+  PATHS /usr/include/nanopb /usr/local/include/nanopb
+)
+
+include_directories(include src/fri_client_sdk ${NANOPB_INCLUDE_DIR})
 
 add_library(fri_connection SHARED
   src/connection_helpers/fri_connection.cpp

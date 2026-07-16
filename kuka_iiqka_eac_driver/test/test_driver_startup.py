@@ -40,7 +40,7 @@ def generate_test_description():
                         "/launch/",
                         "startup.launch.py",
                     ]
-                )
+                ),
             ),
             launch_testing.actions.ReadyToTest(),
         ]
@@ -50,7 +50,7 @@ def generate_test_description():
 class TestDriverStartup(unittest.TestCase):
     def test_read_stdout(self, proc_output):
         # Check for successful initialization
-        proc_output.assertWaitFor("got segment base", timeout=5)
+        proc_output.assertWaitFor("Robot initialized", timeout=5)
         proc_output.assertWaitFor(
             "Successful initialization of hardware 'lbr_iisy3_r760'", timeout=5
         )

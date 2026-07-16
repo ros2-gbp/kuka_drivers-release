@@ -2,7 +2,7 @@
 Changelog for package kuka_drivers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1.1.0 (2026-07-15)
+2.0.0 (2026-07-16)
 ------------------
 * Add mxAutomation support 
 
@@ -14,7 +14,6 @@ Changelog for package kuka_drivers
 * Add iiQKA.OS2 support
 * Add Gazebo support
 * Smaller bugfixes
-* Contributors: Komáromi Sándor, Kristof Pasztor, Áron Svastits, Levente Nas, Kristófi Mihály
 
 0.9.2 (2024-07-10)
 ------------------

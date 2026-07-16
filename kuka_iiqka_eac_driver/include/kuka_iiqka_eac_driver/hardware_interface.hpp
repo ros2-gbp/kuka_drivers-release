@@ -46,7 +46,7 @@ public:
   RCLCPP_SHARED_PTR_DEFINITIONS(KukaEACHardwareInterface)
 
   KUKA_IIQKA_EAC_DRIVER_PUBLIC CallbackReturn
-  on_init(const hardware_interface::HardwareInfo & info) override;
+  on_init(const hardware_interface::HardwareComponentInterfaceParams & params) override;
 
   KUKA_IIQKA_EAC_DRIVER_PUBLIC std::vector<hardware_interface::StateInterface>
   export_state_interfaces() override;
@@ -70,8 +70,6 @@ public:
   write(const rclcpp::Time & time, const rclcpp::Duration & period) override;
 
   KUKA_IIQKA_EAC_DRIVER_PUBLIC void set_server_event(kuka_drivers_core::HardwareEvent event);
-
-  KUKA_IIQKA_EAC_DRIVER_PUBLIC void set_stop_flag() { stop_requested_ = true; }
 
   KUKA_IIQKA_EAC_DRIVER_PUBLIC void reset_cycle_count() { cycle_count_ = 0; }
 
@@ -101,7 +99,6 @@ private:
     kuka_drivers_core::HardwareEvent::HARDWARE_EVENT_UNSPECIFIED;
 
   bool msg_received_;
-  std::atomic<bool> stop_requested_{false};
 };
 }  // namespace kuka_eac
 

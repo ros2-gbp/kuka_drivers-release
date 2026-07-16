@@ -58,7 +58,6 @@ CallbackReturn KssMessageHandler::on_configure(const rclcpp_lifecycle::State &)
   cycle_time_subscription_ = get_node()->create_subscription<std_msgs::msg::UInt8>(
     "~/cycle_time", rclcpp::SystemDefaultsQoS(),
     std::bind(&KssMessageHandler::RsiCycleTimeChangedCallback, this, std::placeholders::_1));
-
   // Status
   status_publisher_ = get_node()->create_publisher<kuka_driver_interfaces::msg::KssStatus>(
     "~/status", rclcpp::SystemDefaultsQoS());
@@ -76,10 +75,16 @@ CallbackReturn KssMessageHandler::on_configure(const rclcpp_lifecycle::State &)
 
 ReturnType KssMessageHandler::update(const rclcpp::Time &, const rclcpp::Duration &)
 {
-  command_interfaces_[0].set_value(cycle_time_.load());
+  bool cycle_time_set = command_interfaces_[0].set_value(cycle_time_.load());
+  if (!cycle_time_set)
+  {
+    RCLCPP_WARN_THROTTLE(
+      get_node()->get_logger(), *get_node()->get_clock(), WARN_THROTTLE_DURATION_MS,
+      "Failed to set cycle time command interface");
+  }
 
   status_ = state_interfaces_;
-  return ReturnType::OK;
+  return cycle_time_set ? ReturnType::OK : ReturnType::ERROR;
 }
 
 void KssMessageHandler::RsiCycleTimeChangedCallback(const std_msgs::msg::UInt8::SharedPtr msg)
@@ -89,6 +94,13 @@ void KssMessageHandler::RsiCycleTimeChangedCallback(const std_msgs::msg::UInt8::
     msg->data == kuka_driver_interfaces::msg::KssStatus::RSI_12MS)
   {
     cycle_time_.store(static_cast<double>(msg->data));
+    RCLCPP_INFO(
+      get_node()->get_logger(),
+      "RSI cycle time changed to %s, "
+      "this will be sent to the KUKA controller during activation",
+      msg->data == 2   ? "12 ms"
+      : msg->data == 1 ? "4 ms"
+                       : "UNSPECIFIED");
   }
   else
   {
@@ -102,12 +114,14 @@ KssMessageHandler::Status & KssMessageHandler::Status::operator=(
 {
   for (const auto & [value_ptr, idx] : UINT8_MAPPINGS)
   {
-    *value_ptr = static_cast<uint8_t>(state_interfaces[idx].get_value());
+    *value_ptr = static_cast<uint8_t>(
+      state_interfaces[idx].get_optional().value_or(static_cast<double>(*value_ptr)));
   }
 
   for (const auto & [value_ptr, idx] : BOOL_MAPPINGS)
   {
-    *value_ptr = static_cast<bool>(state_interfaces[idx].get_value());
+    *value_ptr = static_cast<bool>(
+      state_interfaces[idx].get_optional().value_or(static_cast<double>(*value_ptr)));
   }
 
   return *this;

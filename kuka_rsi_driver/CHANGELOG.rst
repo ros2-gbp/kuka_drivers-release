@@ -2,7 +2,7 @@
 Changelog for package kuka_rsi_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1.1.0 (2026-07-15)
+2.0.0 (2026-07-16)
 ------------------
 * Synchronize update rate of controller manager 
 * Add option to lock memory
@@ -21,7 +21,6 @@ Changelog for package kuka_rsi_driver
 * Add iiQKA.OS2 support
 * Add Gazebo support
 * Smaller bugfixes
-* Contributors: Komáromi Sándor, Kristof Pasztor, Áron Svastits, Levente Nas, Kristófi Mihály
 
 0.9.2 (2024-07-10)
 ------------------

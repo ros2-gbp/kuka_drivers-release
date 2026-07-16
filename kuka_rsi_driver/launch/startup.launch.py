@@ -16,8 +16,13 @@
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
-from launch.substitutions import Command, FindExecutable, PathJoinSubstitution, LaunchConfiguration
-from launch_ros.actions import Node, LifecycleNode
+from launch.substitutions import (
+    Command,
+    FindExecutable,
+    LaunchConfiguration,
+    PathJoinSubstitution,
+)
+from launch_ros.actions import LifecycleNode, Node
 from launch_ros.substitutions import FindPackageShare
 
 
@@ -159,8 +164,6 @@ def launch_setup(context, *args, **kwargs):
         parameters=[
             robot_description,
             controller_config,
-            jtc_config,
-            gpio_config,
             {
                 "cpu_affinity": int(rt_core.perform(context)),
                 "thread_priority": int(rt_prio.perform(context)),
@@ -194,14 +197,19 @@ def launch_setup(context, *args, **kwargs):
     )
 
     # Spawn controllers
-    def controller_spawner(controller_names, prefix_cmd, activate=False):
+    def controller_spawner(controller_name, prefix_cmd, param_file=None, activate=False):
         arg_list = [
-            controller_names,
+            controller_name,
             "-c",
             "controller_manager",
             "-n",
             ns,
         ]
+
+        # Add param-file if it's provided
+        if param_file:
+            arg_list.extend(["--param-file", param_file])
+
         if not activate:
             arg_list.append("--inactive")
 
@@ -212,20 +220,23 @@ def launch_setup(context, *args, **kwargs):
             arguments=arg_list,
         )
 
-    controller_names = [
-        "joint_state_broadcaster",
-        "joint_trajectory_controller",
-        "event_broadcaster",
-    ]
+    controllers = {
+        "joint_state_broadcaster": None,
+        "joint_trajectory_controller": jtc_config,
+        "event_broadcaster": None,
+    }
 
     if use_gpio.perform(context) == "true":
-        controller_names.append("gpio_controller")
+        controllers["gpio_controller"] = gpio_config
 
     if driver_version.perform(context) in {"eki_rsi", "mxa_rsi"}:
-        controller_names.append("control_mode_handler")
-        controller_names.append("kss_message_handler")
+        controllers["control_mode_handler"] = None
+        controllers["kss_message_handler"] = None
 
-    controller_spawners = [controller_spawner(name, prefix_cmd) for name in controller_names]
+    controller_spawners = [
+        controller_spawner(name, prefix_cmd, param_file)
+        for name, param_file in controllers.items()
+    ]
 
     nodes_to_start = [
         control_node,

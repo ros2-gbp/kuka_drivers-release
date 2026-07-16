@@ -27,9 +27,10 @@
 namespace kuka_rsi_driver
 {
 
-CallbackReturn KukaMxaRsiHardwareInterface::on_init(const hardware_interface::HardwareInfo & info)
+CallbackReturn KukaMxaRsiHardwareInterface::on_init(
+  const hardware_interface::HardwareComponentInterfaceParams & params)
 {
-  if (KukaRSIHardwareInterfaceBase::on_init(info) != CallbackReturn::SUCCESS)
+  if (KukaRSIHardwareInterfaceBase::on_init(params) != CallbackReturn::SUCCESS)
   {
     return CallbackReturn::ERROR;
   }
@@ -192,7 +193,7 @@ void KukaMxaRsiHardwareInterface::Read(const int64_t request_timeout)
   }
   else if (
     !status_manager_.IsMotionPossible() &&
-    this->lifecycle_state_.id() == lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE)
+    this->get_lifecycle_state().id() == lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE)
   {
     RCLCPP_ERROR(logger_, "Motion is not possible");
     set_server_event(kuka_drivers_core::HardwareEvent::ERROR);

@@ -9,7 +9,9 @@ ROS2 Distro | Branch | Github CI | SonarCloud
 
 ## Requirements
 
-The drivers require a system with ROS installed. It is recommended to use Ubuntu 22.04 with ROS Humble.
+The drivers require a system with ROS installed. It is recommended to use Ubuntu 24.04 with ROS Jazzy.
+
+Additionally, there exists a ROS Humble version of the drivers, and its corresponding configuration can be found under the `humble` branch.
 
 It is also recommended to use a client machine with a real-time kernel, as all three drivers require cyclic, real-time communication. Due to the real-time requirement, Windows systems are not recommended and covered in the documentation.
 
@@ -27,7 +29,7 @@ Clone KUKA ROS2 repositories.
 
 ```bash
 cd ~/ros2_ws/src
-git clone -b humble https://github.com/kroshu/kuka_drivers.git
+git clone https://github.com/kroshu/kuka_drivers.git
 vcs import < kuka_drivers/upstream.repos
 ```
 

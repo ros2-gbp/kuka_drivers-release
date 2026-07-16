@@ -2,7 +2,7 @@
 Changelog for package kuka_iiqka_eac_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1.1.0 (2026-07-15)
+2.0.0 (2026-07-16)
 ------------------
 * Add option to lock memory
 
@@ -10,7 +10,6 @@ Changelog for package kuka_iiqka_eac_driver
 ------------------
 * Add Gazebo support
 * Smaller bugfixes
-* Contributors: Komáromi Sándor, Kristof Pasztor, Áron Svastits, Levente Nas, Kristófi Mihály
 
 0.9.2 (2024-07-10)
 ------------------

@@ -23,9 +23,10 @@
 
 namespace kuka_rsi_driver
 {
-CallbackReturn KukaRSIHardwareInterfaceBase::on_init(const hardware_interface::HardwareInfo & info)
+CallbackReturn KukaRSIHardwareInterfaceBase::on_init(
+  const hardware_interface::HardwareComponentInterfaceParams & params)
 {
-  if (hardware_interface::SystemInterface::on_init(info) != CallbackReturn::SUCCESS)
+  if (hardware_interface::SystemInterface::on_init(params) != CallbackReturn::SUCCESS)
   {
     return CallbackReturn::ERROR;
   }
@@ -154,9 +155,7 @@ return_type KukaRSIHardwareInterfaceBase::read(const rclcpp::Time &, const rclcp
 return_type KukaRSIHardwareInterfaceBase::write(const rclcpp::Time &, const rclcpp::Duration &)
 {
   // If control is not started or a request is missed, do not send back anything
-  if (
-    !msg_received_ ||
-    this->lifecycle_state_.id() != lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE)
+  if (!msg_received_)
   {
     return return_type::OK;
   }
@@ -181,9 +180,10 @@ bool KukaRSIHardwareInterfaceBase::SetupRobot(
   for (const auto & gpio_command : info_.gpios[0].command_interfaces)
   {
     RCLCPP_INFO(
-      logger_, "Name: %s, Data type: %s, Initial value: %s, Min: %s, Max: %s",
+      logger_, "Name: %s, Data type: %s, Initial value: %s, Enable limits: %s, Min: %s, Max: %s",
       gpio_command.name.c_str(), gpio_command.data_type.c_str(), gpio_command.initial_value.c_str(),
-      gpio_command.min.c_str(), gpio_command.max.c_str());
+      gpio_command.enable_limits ? "true" : "false", gpio_command.min.c_str(),
+      gpio_command.max.c_str());
 
     // TODO(Komaromi): Add size and parameters
     config.gpio_command_configs.emplace_back(ParseGPIOConfig(gpio_command));
@@ -195,9 +195,9 @@ bool KukaRSIHardwareInterfaceBase::SetupRobot(
   for (const auto & gpio_state : info_.gpios[0].state_interfaces)
   {
     RCLCPP_INFO(
-      logger_, "Name: %s, Data type: %s, Initial value: %s, Min: %s, Max: %s",
+      logger_, "Name: %s, Data type: %s, Initial value: %s, Enable limits: %s, Min: %s, Max: %s",
       gpio_state.name.c_str(), gpio_state.data_type.c_str(), gpio_state.initial_value.c_str(),
-      gpio_state.min.c_str(), gpio_state.max.c_str());
+      gpio_state.enable_limits ? "true" : "false", gpio_state.min.c_str(), gpio_state.max.c_str());
 
     // TODO(Komaromi): Add size, and parameters
     config.gpio_state_configs.emplace_back(ParseGPIOConfig(gpio_state));
@@ -360,7 +360,7 @@ kuka::external::control::kss::GPIOConfiguration KukaRSIHardwareInterfaceBase::Pa
 {
   kuka::external::control::kss::GPIOConfiguration gpio_config;
   gpio_config.name = info.name;
-  gpio_config.enable_limits = true;
+  gpio_config.enable_limits = info.enable_limits;
   // TODO(komaromi): This might not work from Kilted kaiju onward the get_optional function in the
   // handle since it is only accepting double and bool
   if (info.data_type == "BOOL" || info.data_type == "bool")

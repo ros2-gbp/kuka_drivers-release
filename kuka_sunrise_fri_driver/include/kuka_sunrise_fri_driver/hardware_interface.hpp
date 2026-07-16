@@ -63,7 +63,7 @@ public:
   {
   }
   KUKA_SUNRISE_FRI_DRIVER_PUBLIC CallbackReturn
-  on_init(const hardware_interface::HardwareInfo & info) override;
+  on_init(const hardware_interface::HardwareComponentInterfaceParams & params) override;
   KUKA_SUNRISE_FRI_DRIVER_PUBLIC CallbackReturn
   on_configure(const rclcpp_lifecycle::State & previous_state) override;
   KUKA_SUNRISE_FRI_DRIVER_PUBLIC CallbackReturn
@@ -118,9 +118,6 @@ private:
   std::string client_ip_ = "0.0.0.0";
   int receive_counter_ = 0;
   bool torque_command_mode_ = false;
-
-  int prev_period_ = 0;
-  int prev_multiplier_ = 0;
 
   // State and command interfaces
   std::vector<double> hw_position_commands_;

@@ -34,10 +34,10 @@ RobotManagerBase::RobotManagerBase() : kuka_drivers_core::ROS2BaseLCNode("robot_
   event_callback_group_ = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
 
   change_hardware_state_client_ = this->create_client<SetHardwareComponentState>(
-    "controller_manager/set_hardware_component_state", qos.get_rmw_qos_profile(), cbg_);
+    "controller_manager/set_hardware_component_state", qos, cbg_);
 
-  change_controller_state_client_ = this->create_client<SwitchController>(
-    "controller_manager/switch_controller", qos.get_rmw_qos_profile(), cbg_);
+  change_controller_state_client_ =
+    this->create_client<SwitchController>("controller_manager/switch_controller", qos, cbg_);
 
   auto is_configured_qos = rclcpp::QoS(rclcpp::KeepLast(1));
   is_configured_qos.best_effort();
@@ -80,7 +80,7 @@ RobotManagerBase::RobotManagerBase() : kuka_drivers_core::ROS2BaseLCNode("robot_
     });
 
   set_param_client_ = this->create_client<rcl_interfaces::srv::SetParameters>(
-    "controller_manager/set_parameters", qos.get_rmw_qos_profile(), cbg_);
+    "controller_manager/set_parameters", rclcpp::SystemDefaultsQoS(), cbg_);
 
   // Publisher for sending cycle_time to KssMessageHandler
   cycle_time_pub_ = this->create_publisher<std_msgs::msg::UInt8>(

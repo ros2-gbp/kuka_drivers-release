@@ -20,7 +20,7 @@ package_name = "kuka_rsi_simulator"
 
 setup(
     name=package_name,
-    version="1.1.0",
+    version="2.0.0",
     packages=[package_name],
     data_files=[
         ("share/ament_index/resource_index/packages", ["resource/" + package_name]),
@@ -39,4 +39,6 @@ setup(
     entry_points={
         "console_scripts": ["rsi_simulator = kuka_rsi_simulator.rsi_simulator:main"],
     },
+    tests_require=["pytest"],
+    test_suite="test",
 )

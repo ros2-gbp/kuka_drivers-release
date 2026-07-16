@@ -22,9 +22,9 @@ Two different interfaces should be defined for all drivers supporting real-time 
 
 ### Real-time interface
 
-The choice for the real-time interface was straightforward, as a standardized control framework exists for ROS2, called `ros2_control`, also supported by ROS-Industrial. The drivers are built using this framework, therefore it is recommended the read through its [documentation](https://control.ros.org/humble/doc/ros2_control/doc/index.html), as this documentation builds on the knowledge of the framework.
+The choice for the real-time interface was straightforward, as a standardized control framework exists for ROS2, called `ros2_control`, also supported by ROS-Industrial. The drivers are built using this framework, therefore it is recommended the read through its [documentation](https://control.ros.org/master/doc/ros2_control/doc/index.html), as this documentation builds on the knowledge of the framework.
 
-All 3 of the KUKA real-time interfaces handle the timing on the controller side, so external control is always synchronized with the internal control cycle. This means, that calling the `read` method of the `controller_manager` cannot return immediately, but has to wait until the controller sends an update, which is triggered by the internal clock. Because of this blocking read, the default `ros2_control_node` cannot be used, as there it is expected that the `controller_manager` handles the timing according to the configured control frequency. Therefore a [custom control node](https://github.com/kroshu/kuka_drivers/blob/humble/kuka_drivers_core/src/control_node.cpp) was implemented that uses the `controller_manager` and all other tools of `ros2_control`, but leaves the time management to the robot controller.
+All 3 of the KUKA real-time interfaces handle the timing on the controller side, so external control is always synchronized with the internal control cycle. This means, that calling the `read` method of the `controller_manager` cannot return immediately, but has to wait until the controller sends an update, which is triggered by the internal clock. Because of this blocking read, the default `ros2_control_node` cannot be used, as there it is expected that the `controller_manager` handles the timing according to the configured control frequency. Therefore a [custom control node](https://github.com/kroshu/kuka_drivers/blob/master/kuka_drivers_core/src/control_node.cpp) was implemented that uses the `controller_manager` and all other tools of `ros2_control`, but leaves the time management to the robot controller.
 
 This change does not influence the API of the `ros2_control` framework, the real-time dataflow can be accessed by any controller.
 
@@ -66,7 +66,7 @@ The consequence of the lifecycle interface is, that 3 commands are necessary to 
 
 ### Control mode definitions
 
-The control mode specifications are also part of the common API. They are defined as an enum in the [`kuka_drivers_core`](https://github.com/kroshu/kuka_drivers/blob/humble/kuka_drivers_core/include/kuka_drivers_core/control_mode.hpp) package, and have the following meaning:
+The control mode specifications are also part of the common API. They are defined as an enum in the [`kuka_drivers_core`](https://github.com/kroshu/kuka_drivers/blob/master/kuka_drivers_core/include/kuka_drivers_core/control_mode.hpp) package, and have the following meaning:
 
 - joint position control: the driver streams cyclic position updates for every joint.
   - Needed command interface(s): `position`
@@ -101,14 +101,14 @@ The following table shows the supported features and control modes of each drive
 The repository contains a few other packages aside from the 3 drivers:
 
 - `kuka_driver_interfaces`: this package contains the custom message definition necessary for KUKA robots.
-- `kuka_drivers_core`: this package contains core functionalities used by more drivers, including the `control_node`, base classes for nodes with improved parameter handling, enum and constant definitions and a class for managing the controller activation and deactivation at control mode changes. Details about these features can be found in the package [documentation](https://github.com/kroshu/kuka_drivers/blob/humble/kuka_drivers_core/README.md)
+- `kuka_drivers_core`: this package contains core functionalities used by more drivers, including the `control_node`, base classes for nodes with improved parameter handling, enum and constant definitions and a class for managing the controller activation and deactivation at control mode changes. Details about these features can be found in the package [documentation](https://github.com/kroshu/kuka_drivers/blob/master/kuka_drivers_core/README.md)
 - `kuka_rsi_simulator`: this package contains a simple simulator of RSI, that implements a UDP server accepting the same xml format as RSI and returning the commanded values as the current state, without any checks.
 
 ## MoveIt integration
 
 The `ros2_control` framework supports MoveIt out-of-the-box, as the `joint_trajectory_controller` can interpolate the trajectories planned by it. Setting up Moveit is a little more complex, therefore an example package, `iiqka_moveit_example`, is provided to help developers. The `iiqka_moveit_example` package is located in the [`examples`](https://github.com/kroshu/examples) repository. This contains basic examples of using MoveIt with the driver. Additionally, it contains a [launch file](https://github.com/kroshu/examples/blob/master/iiqka_moveit_example/launch/launch_trajectory_publisher.launch.py) that commands 4 goal positions near the home position cyclically (the points and parameters can be modified in [this](https://github.com/kroshu/examples/blob/master/iiqka_moveit_example/config/dummy_publisher.yaml) configuration file). This can be used to test moving any robot with the driver, and is the recommended way instead of the `rqt_joint_trajectory_controller`, which commands very jerky trajectories due to batching.
 
-As mentioned earlier, the package contains a [launch file](https://github.com/kroshu/examples/blob/humble/iiqka_moveit_example/launch/moveit_planning_example.launch.py) that starts the iiQKA driver, `rviz`, and the `move_group` server with the required configuration. The `robot_manager` lifecycle node should be configured and activated after startup.
+As mentioned earlier, the package contains a [launch file](https://github.com/kroshu/examples/blob/master/iiqka_moveit_example/launch/moveit_planning_example.launch.py) that starts the iiQKA driver, `rviz`, and the `move_group` server with the required configuration. The `robot_manager` lifecycle node should be configured and activated after startup.
 
 After activation, the Motion Planning plugin can be added (`Add` -> `moveit_ros_visualisation` -> `MotionPlanning`) to plan trajectories from the `rviz` GUI. (`Planning group` in the `Planning` tab should be changed to `manipulator`.)
 
@@ -141,7 +141,7 @@ The joint position values commanded are available on the topic `/joint_group_imp
 
 Additionally the `trajectory_execution.allowed_start_tolerfance` parameter in `moveit_controllers.yaml` (found in the moveit support packages) should be increased based on the actual displacement between commanded and measured joint values.
 
-If you would like to only move the robot by sending a goal to the `joint_trajectory_controller` for interpolation (e.g. with the [example trajectory publisher](https://github.com/kroshu/examples/blob/humble/iiqka_moveit_example/launch/launch_trajectory_publisher.launch.py)), the following line should be added to the controller configuration file:
+If you would like to only move the robot by sending a goal to the `joint_trajectory_controller` for interpolation (e.g. with the [example trajectory publisher](https://github.com/kroshu/examples/blob/master/iiqka_moveit_example/launch/launch_trajectory_publisher.launch.py)), the following line should be added to the controller configuration file:
 
 ```yaml
 open_loop_control: true

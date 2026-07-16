@@ -2,7 +2,7 @@
 Changelog for package kuka_sunrise_fri_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1.1.0 (2026-07-15)
+2.0.0 (2026-07-16)
 ------------------
 * Added synchronus cycle time change
 * Synchronize update rate of controller manager
@@ -16,7 +16,6 @@ Changelog for package kuka_sunrise_fri_driver
   * Fix impedance config publisher
   * Make server port configurable
 * Update version and maintainers
-* Contributors: Komáromi Sándor, Kristof Pasztor, Áron Svastits, Levente Nas, Kristófi Mihály
 
 0.9.2 (2024-07-10)
 ------------------

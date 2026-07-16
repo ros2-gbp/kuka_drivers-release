@@ -46,7 +46,8 @@ public:
   }
 
   KUKA_RSI_DRIVER_PUBLIC
-  CallbackReturn on_init(const hardware_interface::HardwareInfo &) override;
+  CallbackReturn on_init(
+    const hardware_interface::HardwareComponentInterfaceParams & params) override;
 
   KUKA_RSI_DRIVER_PUBLIC
   std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
@@ -78,6 +79,7 @@ private:
   std::condition_variable init_cv_;
 
   bool verify_robot_model_;
+  std::atomic<bool> stop_requested_{false};
 };
 }  // namespace kuka_rsi_driver
 
